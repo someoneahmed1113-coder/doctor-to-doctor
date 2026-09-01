@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#113b63">
+<title>Doctor to Doctor</title>
+<style>
+*{box-sizing:border-box}
+:root{--navy:#113b63;--blue:#1d5f8f;--bg:#f4f7fb;--text:#19364f;--muted:#718493;--green:#168a54;--amber:#b87500}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.hero{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:24px 16px 36px;border-radius:0 0 26px 26px}
+.hero-inner{max-width:820px;margin:auto}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:48px;height:48px;background:#fff;color:var(--navy);border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800}
+h1{font-size:27px;margin:0} .sub{opacity:.9;margin-top:4px;font-size:14px}
+.wrap{max-width:820px;margin:auto;padding:0 14px 24px}
+.panel{background:#fff;margin-top:-20px;border-radius:18px;padding:14px;box-shadow:0 8px 22px rgba(20,50,80,.12)}
+input,select{width:100%;padding:13px;border:1px solid #d8e2eb;border-radius:12px;font-size:15px;background:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
+.chips{display:flex;gap:8px;overflow:auto;margin-top:10px}
+.chip{border:0;padding:9px 12px;border-radius:999px;white-space:nowrap;background:#edf3f7;color:#35536b}
+.chip.active{background:var(--navy);color:#fff}
+.headrow{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 8px}
+.count{font-size:13px;color:var(--muted)}
+.card{background:#fff;border-radius:17px;padding:15px;margin:10px 0;box-shadow:0 3px 14px rgba(25,54,79,.06)}
+.top{display:flex;justify-content:space-between;gap:10px}
+.name{font-size:18px;font-weight:700}
+.meta{font-size:13.5px;color:var(--muted);line-height:1.7;margin-top:5px}
+.status{font-size:12px;border-radius:999px;padding:7px 10px;height:max-content;white-space:nowrap}
+.on{background:#dff5e8;color:#116d41} .avail{background:#e8f1fb;color:#235f8d} .off{background:#f0f1f3;color:#6d7780}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.btn{border:0;border-radius:11px;padding:11px;text-align:center;text-decoration:none;font-size:14px}
+.call{background:var(--green);color:white} .details{background:#eaf2f7;color:var(--navy)}
+.notice{margin-top:17px;background:#fff7e7;color:#735017;border-radius:14px;padding:12px;font-size:12px;line-height:1.7}
+.empty{display:none;text-align:center;padding:30px;color:var(--muted)}
+.footer{text-align:center;color:#8798a5;font-size:11px;padding:18px}
+.sheet{display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);align-items:flex-end;z-index:50}
+.sheetbox{background:#fff;width:100%;border-radius:24px 24px 0 0;padding:20px}
+.close{width:100%;border:0;border-radius:11px;padding:12px;margin-top:8px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hero"><div class="hero-inner">
+  <div class="brand"><div class="logo"><img src="cluster-logo.jpg" alt="شعار تجمع الحدود الشمالية الصحي" style="width:46px;height:46px;object-fit:contain;border-radius:10px"></div><div><h1>Doctor to Doctor</h1><div class="sub">دليل التواصل الطبي الموحد — نموذج تجريبي</div></div></div>
+</div></div>
+
+<main class="wrap">
+<section class="panel">
+  <input id="q" type="search" placeholder="ابحث باسم الطبيب أو التخصص أو المستشفى..." oninput="render()">
+  <div class="grid">
+    <select id="hospital" onchange="render()"><option value="">كل المستشفيات</option><option value="برج الشمال الطبي">برج الشمال الطبي</option><option value="مستشفى الأمير عبدالعزيز بن مساعد">مستشفى الأمير عبدالعزيز بن مساعد</option><option value="مستشفى عرعر المركزي">مستشفى عرعر المركزي</option><option value="مستشفى النساء والولادة والأطفال بعرعر">مستشفى النساء والولادة والأطفال بعرعر</option><option value="مستشفى الرعاية المديدة بعرعر">مستشفى الرعاية المديدة بعرعر</option><option value="مجمع إرادة للصحة النفسية">مجمع إرادة للصحة النفسية</option><option value="مستشفى جديدة عرعر">مستشفى جديدة عرعر</option><option value="مستشفى رفحاء المركزي">مستشفى رفحاء المركزي</option><option value="مستشفى طريف العام">مستشفى طريف العام</option><option value="مستشفى العويقيلة العام">مستشفى العويقيلة العام</option><option value="مستشفى شعبة نصاب">مستشفى شعبة نصاب</option><option value="مركز الأمير عبدالله بن عبدالعزيز بن مساعد لطب وجراحة القلب">مركز الأمير عبدالله بن عبدالعزيز بن مساعد لطب وجراحة القلب</option></select>
+    <select id="specialty" onchange="render()"><option value="">كل التخصصات</option><option value="أطفال">أطفال</option><option value="أنف وأذن وحنجرة">أنف وأذن وحنجرة</option><option value="باطنية">باطنية</option><option value="تخدير">تخدير</option><option value="تخدير قلب">تخدير قلب</option><option value="جراحة عامة">جراحة عامة</option><option value="جراحة قلب">جراحة قلب</option><option value="جلدية">جلدية</option><option value="حديثي الولادة">حديثي الولادة</option><option value="رعاية مزمنة">رعاية مزمنة</option><option value="طب أسرة">طب أسرة</option><option value="طب تأهيلي">طب تأهيلي</option><option value="طب نفسي">طب نفسي</option><option value="طوارئ">طوارئ</option><option value="طوارئ أطفال">طوارئ أطفال</option><option value="طوارئ نفسية">طوارئ نفسية</option><option value="عظام">عظام</option><option value="علاج إدمان">علاج إدمان</option><option value="علاج طبيعي">علاج طبيعي</option><option value="عناية قلبية">عناية قلبية</option><option value="عناية مركزة">عناية مركزة</option><option value="عيون">عيون</option><option value="قسطرة قلبية">قسطرة قلبية</option><option value="قلب">قلب</option><option value="مخ وأعصاب">مخ وأعصاب</option><option value="مسالك بولية">مسالك بولية</option><option value="نساء وولادة">نساء وولادة</option></select>
+  </div>
+  <div class="chips">
+    <button id="all" class="chip active" onclick="setStatus('')">الكل</button>
+    <button id="on" class="chip" onclick="setStatus('مناوب الآن')">المناوب الآن</button>
+    <button id="av" class="chip" onclick="setStatus('متاح')">المتاح</button>
+    <button class="chip" onclick="clearAll()">مسح الفلاتر</button>
+  </div>
+</section>
+
+<div class="headrow"><strong>دليل الأطباء</strong><span id="count" class="count"></span></div>
+<section id="list"></section>
+<div id="empty" class="empty">لا توجد نتائج مطابقة.</div>
+
+<div class="notice">⚠️ جميع أسماء الأطباء وأرقام التواصل في هذه النسخة وهمية ومخصصة فقط لتجربة الفكرة قبل إدخال البيانات المعتمدة.</div>
+<div class="footer">Doctor to Doctor • Prototype 01 • سبتمبر 2026</div>
+</main>
+
+<div id="sheet" class="sheet" onclick="if(event.target.id==='sheet')this.style.display='none'">
+<div class="sheetbox">
+<h2 id="dn"></h2><p id="ds"></p><p id="dh"></p><p id="dst"></p><p id="dp"></p>
+<a id="dc" class="btn call" style="display:block;margin-top:12px" href="#">📞 اتصال الآن</a>
+<button class="close" onclick="document.getElementById('sheet').style.display='none'">إغلاق</button>
+</div></div>
+
+<script>
+const doctors=[{"id": 1, "name": "ريم الشمري", "specialty": "باطنية", "hospital": "برج الشمال الطبي", "phone": "0505614226", "status": "مناوب الآن"}, {"id": 2, "name": "زياد المطيري", "specialty": "جراحة عامة", "hospital": "برج الشمال الطبي", "phone": "0522719583", "status": "متاح"}, {"id": 3, "name": "نورة الغامدي", "specialty": "مخ وأعصاب", "hospital": "برج الشمال الطبي", "phone": "0582458591", "status": "غير مناوب"}, {"id": 4, "name": "أحمد الدوسري", "specialty": "عظام", "hospital": "برج الشمال الطبي", "phone": "0501499914", "status": "مناوب الآن"}, {"id": 5, "name": "تركي المطيري", "specialty": "مسالك بولية", "hospital": "برج الشمال الطبي", "phone": "0539478454", "status": "متاح"}, {"id": 6, "name": "إبراهيم العنزي", "specialty": "طوارئ", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "phone": "0584335942", "status": "مناوب الآن"}, {"id": 7, "name": "سارة السبيعي", "specialty": "باطنية", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "phone": "0588038374", "status": "متاح"}, {"id": 8, "name": "زياد الخالدي", "specialty": "جراحة عامة", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "phone": "0595667265", "status": "غير مناوب"}, {"id": 9, "name": "دلال التميمي", "specialty": "عناية مركزة", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "phone": "0503678638", "status": "مناوب الآن"}, {"id": 10, "name": "سارة الدوسري", "specialty": "تخدير", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "phone": "0555661907", "status": "متاح"}, {"id": 11, "name": "بدر المطيري", "specialty": "باطنية", "hospital": "مستشفى عرعر المركزي", "phone": "0552714803", "status": "مناوب الآن"}, {"id": 12, "name": "تركي الدوسري", "specialty": "عظام", "hospital": "مستشفى عرعر المركزي", "phone": "0517022674", "status": "متاح"}, {"id": 13, "name": "رنا القحطاني", "specialty": "أنف وأذن وحنجرة", "hospital": "مستشفى عرعر المركزي", "phone": "0595437923", "status": "غير مناوب"}, {"id": 14, "name": "دلال العنزي", "specialty": "عيون", "hospital": "مستشفى عرعر المركزي", "phone": "0579996414", "status": "مناوب الآن"}, {"id": 15, "name": "نايف البلوي", "specialty": "جلدية", "hospital": "مستشفى عرعر المركزي", "phone": "0562322047", "status": "متاح"}, {"id": 16, "name": "محمد الحربي", "specialty": "نساء وولادة", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "phone": "0597067228", "status": "مناوب الآن"}, {"id": 17, "name": "أحمد المطيري", "specialty": "أطفال", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "phone": "0511768805", "status": "متاح"}, {"id": 18, "name": "نورة المطيري", "specialty": "حديثي الولادة", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "phone": "0542338687", "status": "غير مناوب"}, {"id": 19, "name": "رنا المطيري", "specialty": "تخدير", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "phone": "0517377459", "status": "مناوب الآن"}, {"id": 20, "name": "سعد الخالدي", "specialty": "طوارئ أطفال", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "phone": "0553728882", "status": "متاح"}, {"id": 21, "name": "ياسر القحطاني", "specialty": "طب تأهيلي", "hospital": "مستشفى الرعاية المديدة بعرعر", "phone": "0535479144", "status": "مناوب الآن"}, {"id": 22, "name": "سارة البلوي", "specialty": "رعاية مزمنة", "hospital": "مستشفى الرعاية المديدة بعرعر", "phone": "0513871230", "status": "متاح"}, {"id": 23, "name": "محمد الغامدي", "specialty": "علاج طبيعي", "hospital": "مستشفى الرعاية المديدة بعرعر", "phone": "0533741438", "status": "غير مناوب"}, {"id": 24, "name": "خالد الدوسري", "specialty": "باطنية", "hospital": "مستشفى الرعاية المديدة بعرعر", "phone": "0544684531", "status": "مناوب الآن"}, {"id": 25, "name": "نورة القحطاني", "specialty": "طب تأهيلي", "hospital": "مستشفى الرعاية المديدة بعرعر", "phone": "0504842788", "status": "متاح"}, {"id": 26, "name": "مها العنزي", "specialty": "طب نفسي", "hospital": "مجمع إرادة للصحة النفسية", "phone": "0557730428", "status": "مناوب الآن"}, {"id": 27, "name": "سعد الشمري", "specialty": "علاج إدمان", "hospital": "مجمع إرادة للصحة النفسية", "phone": "0536279418", "status": "متاح"}, {"id": 28, "name": "راشد السبيعي", "specialty": "طب أسرة", "hospital": "مجمع إرادة للصحة النفسية", "phone": "0577637601", "status": "غير مناوب"}, {"id": 29, "name": "أمل البلوي", "specialty": "طوارئ نفسية", "hospital": "مجمع إرادة للصحة النفسية", "phone": "0573396987", "status": "مناوب الآن"}, {"id": 30, "name": "سعد الروقي", "specialty": "طب نفسي", "hospital": "مجمع إرادة للصحة النفسية", "phone": "0535408072", "status": "متاح"}, {"id": 31, "name": "هند العتيبي", "specialty": "طب أسرة", "hospital": "مستشفى جديدة عرعر", "phone": "0567700828", "status": "مناوب الآن"}, {"id": 32, "name": "ياسر المطيري", "specialty": "طوارئ", "hospital": "مستشفى جديدة عرعر", "phone": "0529548432", "status": "متاح"}, {"id": 33, "name": "عمر الشمري", "specialty": "باطنية", "hospital": "مستشفى جديدة عرعر", "phone": "0502839607", "status": "غير مناوب"}, {"id": 34, "name": "بدر السبيعي", "specialty": "أطفال", "hospital": "مستشفى جديدة عرعر", "phone": "0528082668", "status": "مناوب الآن"}, {"id": 35, "name": "إبراهيم الشمري", "specialty": "طب أسرة", "hospital": "مستشفى جديدة عرعر", "phone": "0567402509", "status": "متاح"}, {"id": 36, "name": "إبراهيم الخالدي", "specialty": "باطنية", "hospital": "مستشفى رفحاء المركزي", "phone": "0585218028", "status": "مناوب الآن"}, {"id": 37, "name": "محمد التميمي", "specialty": "جراحة عامة", "hospital": "مستشفى رفحاء المركزي", "phone": "0502921859", "status": "متاح"}, {"id": 38, "name": "نورة البلوي", "specialty": "أطفال", "hospital": "مستشفى رفحاء المركزي", "phone": "0585476583", "status": "غير مناوب"}, {"id": 39, "name": "لمى السبيعي", "specialty": "نساء وولادة", "hospital": "مستشفى رفحاء المركزي", "phone": "0552871534", "status": "مناوب الآن"}, {"id": 40, "name": "ماجد الدوسري", "specialty": "عظام", "hospital": "مستشفى رفحاء المركزي", "phone": "0528612220", "status": "متاح"}, {"id": 41, "name": "سلمان الغامدي", "specialty": "باطنية", "hospital": "مستشفى طريف العام", "phone": "0549398441", "status": "مناوب الآن"}, {"id": 42, "name": "لمى الروقي", "specialty": "جراحة عامة", "hospital": "مستشفى طريف العام", "phone": "0582785277", "status": "متاح"}, {"id": 43, "name": "رنا السبيعي", "specialty": "أطفال", "hospital": "مستشفى طريف العام", "phone": "0549517169", "status": "غير مناوب"}, {"id": 44, "name": "إبراهيم المطيري", "specialty": "نساء وولادة", "hospital": "مستشفى طريف العام", "phone": "0527273233", "status": "مناوب الآن"}, {"id": 45, "name": "محمد الرشيدي", "specialty": "عظام", "hospital": "مستشفى طريف العام", "phone": "0581009594", "status": "متاح"}, {"id": 46, "name": "إبراهيم القحطاني", "specialty": "باطنية", "hospital": "مستشفى العويقيلة العام", "phone": "0571326765", "status": "مناوب الآن"}, {"id": 47, "name": "ياسر البلوي", "specialty": "جراحة عامة", "hospital": "مستشفى العويقيلة العام", "phone": "0545017343", "status": "متاح"}, {"id": 48, "name": "وليد المطيري", "specialty": "أطفال", "hospital": "مستشفى العويقيلة العام", "phone": "0592321324", "status": "غير مناوب"}, {"id": 49, "name": "تركي الغامدي", "specialty": "طب أسرة", "hospital": "مستشفى العويقيلة العام", "phone": "0572161193", "status": "مناوب الآن"}, {"id": 50, "name": "لمى الزهراني", "specialty": "طوارئ", "hospital": "مستشفى العويقيلة العام", "phone": "0523154051", "status": "متاح"}, {"id": 51, "name": "نورة الخالدي", "specialty": "طب أسرة", "hospital": "مستشفى شعبة نصاب", "phone": "0583770370", "status": "مناوب الآن"}, {"id": 52, "name": "سعد الزهراني", "specialty": "باطنية", "hospital": "مستشفى شعبة نصاب", "phone": "0598099076", "status": "متاح"}, {"id": 53, "name": "راشد البلوي", "specialty": "أطفال", "hospital": "مستشفى شعبة نصاب", "phone": "0584374754", "status": "غير مناوب"}, {"id": 54, "name": "سارة الحربي", "specialty": "طوارئ", "hospital": "مستشفى شعبة نصاب", "phone": "0567264956", "status": "مناوب الآن"}, {"id": 55, "name": "خالد البلوي", "specialty": "طب أسرة", "hospital": "مستشفى شعبة نصاب", "phone": "0588574680", "status": "متاح"}, {"id": 56, "name": "نايف المطيري", "specialty": "قلب", "hospital": "مركز الأمير عبدالله بن عبدالعزيز بن مساعد لطب وجراحة القلب", "phone": "0532074176", "status": "مناوب الآن"}, {"id": 57, "name": "أنس العنزي", "specialty": "جراحة قلب", "hospital": "مركز الأمير عبدالله بن عبدالعزيز بن مساعد لطب وجراحة القلب", "phone": "0594860684", "status": "متاح"}, {"id": 58, "name": "سلمان الشمري", "specialty": "قسطرة قلبية", "hospital": "مركز الأمير عبدالله بن عبدالعزيز بن مساعد لطب وجراحة القلب", "phone": "0504841005", "status": "غير مناوب"}, {"id": 59, "name": "تركي البلوي", "specialty": "عناية قلبية", "hospital": "مركز الأمير عبدالله بن عبدالعزيز بن مساعد لطب وجراحة القلب", "phone": "0506543670", "status": "مناوب الآن"}, {"id": 60, "name": "تركي الزهراني", "specialty": "تخدير قلب", "hospital": "مركز الأمير عبدالله بن عبدالعزيز بن مساعد لطب وجراحة القلب", "phone": "0535672073", "status": "متاح"}];
+let statusFilter='';
+function setStatus(s){
+ statusFilter=s;
+ document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+ if(s==='') document.getElementById('all').classList.add('active');
+ if(s==='مناوب الآن') document.getElementById('on').classList.add('active');
+ if(s==='متاح') document.getElementById('av').classList.add('active');
+ render();
+}
+function clearAll(){
+ q.value=''; hospital.value=''; specialty.value=''; setStatus('');
+}
+function render(){
+ const query=q.value.trim().toLowerCase(), h=hospital.value, s=specialty.value;
+ const f=doctors.filter(d=>{
+  const hay=(d.name+' '+d.specialty+' '+d.hospital).toLowerCase();
+  return (!query||hay.includes(query))&&(!h||d.hospital===h)&&(!s||d.specialty===s)&&(!statusFilter||d.status===statusFilter);
+ });
+ list.innerHTML=f.map(d=>`
+ <article class="card">
+  <div class="top">
+   <div><div class="name">د. ${d.name}</div><div class="meta">${d.specialty}<br>${d.hospital}</div></div>
+   <span class="status ${d.status==='مناوب الآن'?'on':d.status==='متاح'?'avail':'off'}">${d.status}</span>
+  </div>
+  <div class="actions"><a class="btn call" href="tel:${d.phone}">📞 اتصال</a><button class="btn details" onclick='showDetails(${JSON.stringify(d)})'>التفاصيل</button></div>
+ </article>`).join('');
+ count.textContent=f.length+' طبيب';
+ empty.style.display=f.length?'none':'block';
+}
+function showDetails(d){
+ dn.textContent='د. '+d.name; ds.textContent='التخصص: '+d.specialty; dh.textContent='المستشفى: '+d.hospital;
+ dst.textContent='الحالة: '+d.status; dp.textContent='رقم التواصل: '+d.phone; dc.href='tel:'+d.phone; sheet.style.display='flex';
+}
+render();
+</script>
+</body></html>
