@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#087ca7">
+<title>Doctor to Doctor | تجمع الحدود الشمالية الصحي</title>
+<style>
+*{box-sizing:border-box}:root{--blue:#087ca7;--blue2:#11a5d2;--ink:#183747;--muted:#6c7e87;--bg:#f4f8fa;--green:#15885c;--line:#dce8ed}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(145deg,#087ca7,#19a9cf);color:white;padding:22px 16px 42px;border-radius:0 0 28px 28px}
+.head{max-width:860px;margin:auto;text-align:center}
+.logo-wrap{display:inline-flex;background:white;border-radius:24px;padding:8px;box-shadow:0 8px 25px #075b7830}
+.logo-wrap img{display:block;width:min(58vw,220px);height:145px;object-fit:contain}
+h1{font-size:29px;margin:13px 0 3px}.tag{font-size:14px;opacity:.95}
+main{max-width:860px;margin:-22px auto 0;padding:0 14px 30px}
+.panel,.card{background:white;border:1px solid var(--line);box-shadow:0 6px 22px #234a5b12}
+.panel{border-radius:20px;padding:14px}
+.search{width:100%;padding:14px;border:1px solid #cfe0e7;border-radius:13px;font-size:16px;outline:none}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
+select{width:100%;padding:12px;border:1px solid #cfe0e7;border-radius:12px;background:white;font-size:14px}
+.chips{display:flex;gap:8px;overflow:auto;padding:11px 0 1px}
+.chip{border:0;padding:9px 13px;border-radius:999px;white-space:nowrap;background:#eaf3f7;color:#315767;font-weight:700}
+.chip.active{background:var(--blue);color:white}
+.bar{display:flex;align-items:center;justify-content:space-between;margin:19px 2px 8px}
+.count{font-size:13px;color:var(--muted)}
+.card{border-radius:18px;padding:15px;margin:10px 0}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.name{font-size:18px;font-weight:800}.meta{font-size:13px;color:var(--muted);line-height:1.8;margin-top:4px}
+.status{font-size:12px;font-weight:700;padding:7px 9px;border-radius:999px;white-space:nowrap}
+.on{background:#dff5e9;color:#12633f}.available{background:#e2f4fb;color:#166886}.off{background:#eef2f4;color:#687a83}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.btn{border:0;border-radius:12px;padding:11px;text-align:center;text-decoration:none;font-size:14px;font-weight:700}
+.call{background:var(--green);color:white}.details{background:#e9f4f8;color:#17617a}
+.notice{margin-top:16px;padding:12px;border-radius:14px;background:#fff8df;color:#6f5a0c;font-size:12px;line-height:1.7}
+.empty{display:none;text-align:center;padding:35px;color:var(--muted)}
+footer{text-align:center;color:#84959d;font-size:11px;padding:18px}
+.sheet{display:none;position:fixed;inset:0;background:#0006;align-items:flex-end;z-index:5}
+.box{background:white;width:100%;border-radius:25px 25px 0 0;padding:20px;max-height:75vh;overflow:auto}
+.close{width:100%;border:0;border-radius:12px;padding:12px;margin-top:12px}
+@media(max-width:560px){.filters{grid-template-columns:1fr}.logo-wrap img{height:125px}}
+</style>
+</head>
+<body>
+<header><div class="head">
+<div class="logo-wrap"><img src="cluster-logo.jpg" alt="شعار تجمع الحدود الشمالية الصحي"></div>
+<h1>Doctor to Doctor</h1>
+<div class="tag">دليل التواصل الطبي الموحد بين مستشفيات التجمع</div>
+</div></header>
+<main>
+<section class="panel">
+<input class="search" id="q" placeholder="ابحث باسم الطبيب أو التخصص أو المستشفى..." oninput="render()">
+<div class="filters">
+<select id="hospital" onchange="render()"><option value="">كل المستشفيات</option></select>
+<select id="specialty" onchange="render()"><option value="">كل التخصصات</option></select>
+</div>
+<div class="chips">
+<button class="chip active" id="c-all" onclick="setStatus('')">الكل</button>
+<button class="chip" id="c-on" onclick="setStatus('on')">🟢 المناوب الآن</button>
+<button class="chip" id="c-available" onclick="setStatus('available')">متاح</button>
+<button class="chip" onclick="resetAll()">مسح الفلاتر</button>
+</div>
+</section>
+<div class="bar"><strong>دليل الأطباء</strong><span class="count" id="count"></span></div>
+<section id="list"></section><div id="empty" class="empty">لا توجد نتائج مطابقة.</div>
+<div class="notice">⚠️ نسخة تجريبية: جميع أسماء الأطباء وأرقام التواصل في هذه النسخة وهمية لأغراض تجربة الواجهة فقط. قبل التوزيع الرسمي تُستبدل بالبيانات المعتمدة وآلية تحديث واضحة.</div>
+<footer>Doctor to Doctor • Prototype 02 • 2026</footer>
+</main>
+<div id="sheet" class="sheet" onclick="if(event.target.id==='sheet')closeSheet()"><div class="box"><div id="sheetBody"></div><button class="close" onclick="closeSheet()">إغلاق</button></div></div>
+<script>
+const doctors=[{"name": "د. تركي الغامدي", "specialty": "طب الطوارئ", "hospital": "برج الشمال الطبي", "status": "on", "phone": "0537535928"}, {"name": "د. راكان الزهراني", "specialty": "الباطنية", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "status": "available", "phone": "0583016374"}, {"name": "د. فهد الروقي", "specialty": "أمراض القلب", "hospital": "مستشفى عرعر المركزي", "status": "off", "phone": "0574055929"}, {"name": "د. فهد العمري", "specialty": "الجراحة العامة", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "status": "on", "phone": "0593672608"}, {"name": "د. أيمن الروقي", "specialty": "جراحة العظام", "hospital": "مستشفى طريف العام", "status": "available", "phone": "0595287810"}, {"name": "د. راكان الحربي", "specialty": "المسالك البولية", "hospital": "مستشفى رفحاء المركزي", "status": "off", "phone": "0564913930"}, {"name": "د. تركي العمري", "specialty": "طب الأطفال", "hospital": "مستشفى العويقيلة العام", "status": "on", "phone": "0513864345"}, {"name": "د. ماجد الروقي", "specialty": "النساء والولادة", "hospital": "مستشفى جديدة عرعر", "status": "available", "phone": "0527369299"}, {"name": "د. تركي الزهراني", "specialty": "التخدير", "hospital": "برج الشمال الطبي", "status": "off", "phone": "0574851315"}, {"name": "د. بدر القحطاني", "specialty": "العناية المركزة", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "status": "on", "phone": "0542701545"}, {"name": "د. سلمان العنزي", "specialty": "الأشعة", "hospital": "مستشفى عرعر المركزي", "status": "available", "phone": "0549387514"}, {"name": "د. مروان الخالدي", "specialty": "طب الأسرة", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "status": "off", "phone": "0526688181"}, {"name": "د. أيمن العنزي", "specialty": "الأنف والأذن والحنجرة", "hospital": "مستشفى طريف العام", "status": "on", "phone": "0596488203"}, {"name": "د. سلمان السبيعي", "specialty": "العيون", "hospital": "مستشفى رفحاء المركزي", "status": "available", "phone": "0590551767"}, {"name": "د. مروان القحطاني", "specialty": "الأمراض الجلدية", "hospital": "مستشفى العويقيلة العام", "status": "off", "phone": "0552840340"}, {"name": "د. راكان الدوسري", "specialty": "طب الطوارئ", "hospital": "مستشفى جديدة عرعر", "status": "on", "phone": "0536941738"}, {"name": "د. فهد المطيري", "specialty": "الباطنية", "hospital": "برج الشمال الطبي", "status": "available", "phone": "0536491380"}, {"name": "د. بدر الدوسري", "specialty": "أمراض القلب", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "status": "off", "phone": "0591486960"}, {"name": "د. أيمن الروقي 2", "specialty": "الجراحة العامة", "hospital": "مستشفى عرعر المركزي", "status": "on", "phone": "0517907683"}, {"name": "د. عبدالله الشمري", "specialty": "جراحة العظام", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "status": "available", "phone": "0526888375"}, {"name": "د. مروان الخالدي 2", "specialty": "المسالك البولية", "hospital": "مستشفى طريف العام", "status": "off", "phone": "0516006078"}, {"name": "د. فهد الدوسري", "specialty": "طب الأطفال", "hospital": "مستشفى رفحاء المركزي", "status": "on", "phone": "0539265309"}, {"name": "د. عمر الزهراني", "specialty": "النساء والولادة", "hospital": "مستشفى العويقيلة العام", "status": "available", "phone": "0522158543"}, {"name": "د. مروان القحطاني 2", "specialty": "التخدير", "hospital": "مستشفى جديدة عرعر", "status": "off", "phone": "0523983499"}, {"name": "د. راكان العنزي", "specialty": "العناية المركزة", "hospital": "برج الشمال الطبي", "status": "on", "phone": "0566435217"}, {"name": "د. ياسر الزهراني", "specialty": "الأشعة", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "status": "available", "phone": "0520043528"}, {"name": "د. فهد القحطاني", "specialty": "طب الأسرة", "hospital": "مستشفى عرعر المركزي", "status": "off", "phone": "0522920198"}, {"name": "د. ماجد الشمري", "specialty": "الأنف والأذن والحنجرة", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "status": "on", "phone": "0527956394"}, {"name": "د. وليد القحطاني", "specialty": "العيون", "hospital": "مستشفى طريف العام", "status": "available", "phone": "0591206796"}, {"name": "د. راكان القحطاني", "specialty": "الأمراض الجلدية", "hospital": "مستشفى رفحاء المركزي", "status": "off", "phone": "0579958132"}, {"name": "د. حسام الزهراني", "specialty": "طب الطوارئ", "hospital": "مستشفى العويقيلة العام", "status": "on", "phone": "0562354492"}, {"name": "د. فهد العنزي", "specialty": "الباطنية", "hospital": "مستشفى جديدة عرعر", "status": "available", "phone": "0530392651"}, {"name": "د. سلمان الخالدي", "specialty": "أمراض القلب", "hospital": "برج الشمال الطبي", "status": "off", "phone": "0524970442"}, {"name": "د. حسام العنزي", "specialty": "الجراحة العامة", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "status": "on", "phone": "0588116742"}, {"name": "د. سعود الزهراني", "specialty": "جراحة العظام", "hospital": "مستشفى عرعر المركزي", "status": "available", "phone": "0514572938"}, {"name": "د. سلمان الدوسري", "specialty": "المسالك البولية", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "status": "off", "phone": "0516535852"}, {"name": "د. نايف الدوسري", "specialty": "طب الأطفال", "hospital": "مستشفى طريف العام", "status": "on", "phone": "0531995520"}, {"name": "د. خالد المطيري", "specialty": "النساء والولادة", "hospital": "مستشفى رفحاء المركزي", "status": "available", "phone": "0532668187"}, {"name": "د. عبدالله الشمري 2", "specialty": "التخدير", "hospital": "مستشفى العويقيلة العام", "status": "off", "phone": "0591700281"}, {"name": "د. فهد العنزي 2", "specialty": "العناية المركزة", "hospital": "مستشفى جديدة عرعر", "status": "on", "phone": "0566813303"}, {"name": "د. مروان العنزي", "specialty": "الأشعة", "hospital": "برج الشمال الطبي", "status": "available", "phone": "0547135283"}, {"name": "د. حسام القحطاني", "specialty": "طب الأسرة", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "status": "off", "phone": "0597046436"}, {"name": "د. مروان العمري", "specialty": "الأنف والأذن والحنجرة", "hospital": "مستشفى عرعر المركزي", "status": "on", "phone": "0563043099"}, {"name": "د. سلمان الشمري", "specialty": "العيون", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "status": "available", "phone": "0524879424"}, {"name": "د. تركي السبيعي", "specialty": "الأمراض الجلدية", "hospital": "مستشفى طريف العام", "status": "off", "phone": "0541927869"}, {"name": "د. نايف الحربي", "specialty": "طب الطوارئ", "hospital": "مستشفى رفحاء المركزي", "status": "on", "phone": "0529526505"}, {"name": "د. أيمن الدوسري", "specialty": "الباطنية", "hospital": "مستشفى العويقيلة العام", "status": "available", "phone": "0563933684"}, {"name": "د. زياد العمري", "specialty": "أمراض القلب", "hospital": "مستشفى جديدة عرعر", "status": "off", "phone": "0520936372"}, {"name": "د. أيمن الغامدي", "specialty": "الجراحة العامة", "hospital": "برج الشمال الطبي", "status": "on", "phone": "0518861494"}, {"name": "د. محمد العمري", "specialty": "جراحة العظام", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "status": "available", "phone": "0515922886"}, {"name": "د. سلمان الروقي", "specialty": "المسالك البولية", "hospital": "مستشفى عرعر المركزي", "status": "off", "phone": "0563296472"}, {"name": "د. ماجد القحطاني", "specialty": "طب الأطفال", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "status": "on", "phone": "0519030682"}, {"name": "د. تركي المطيري", "specialty": "النساء والولادة", "hospital": "مستشفى طريف العام", "status": "available", "phone": "0553466147"}, {"name": "د. راكان السبيعي", "specialty": "التخدير", "hospital": "مستشفى رفحاء المركزي", "status": "off", "phone": "0539309570"}, {"name": "د. حسام الحربي", "specialty": "العناية المركزة", "hospital": "مستشفى العويقيلة العام", "status": "on", "phone": "0510904583"}, {"name": "د. أيمن العمري", "specialty": "الأشعة", "hospital": "مستشفى جديدة عرعر", "status": "available", "phone": "0523457480"}, {"name": "د. عبدالله العنزي", "specialty": "طب الأسرة", "hospital": "برج الشمال الطبي", "status": "off", "phone": "0538596290"}, {"name": "د. تركي الشمري", "specialty": "الأنف والأذن والحنجرة", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "status": "on", "phone": "0529158569"}, {"name": "د. مروان العمري 2", "specialty": "العيون", "hospital": "مستشفى عرعر المركزي", "status": "available", "phone": "0528028400"}, {"name": "د. فهد الزهراني", "specialty": "الأمراض الجلدية", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "status": "off", "phone": "0582664849"}, {"name": "د. سعود الروقي", "specialty": "طب الطوارئ", "hospital": "مستشفى طريف العام", "status": "on", "phone": "0580284701"}, {"name": "د. فهد العنزي 3", "specialty": "الباطنية", "hospital": "مستشفى رفحاء المركزي", "status": "available", "phone": "0562096074"}, {"name": "د. حسام الخالدي", "specialty": "أمراض القلب", "hospital": "مستشفى العويقيلة العام", "status": "off", "phone": "0525575445"}, {"name": "د. راكان العمري", "specialty": "الجراحة العامة", "hospital": "مستشفى جديدة عرعر", "status": "on", "phone": "0537633588"}, {"name": "د. زياد الروقي", "specialty": "جراحة العظام", "hospital": "برج الشمال الطبي", "status": "available", "phone": "0540957749"}, {"name": "د. فهد الخالدي", "specialty": "المسالك البولية", "hospital": "مستشفى الأمير عبدالعزيز بن مساعد", "status": "off", "phone": "0512092982"}, {"name": "د. نايف المطيري", "specialty": "طب الأطفال", "hospital": "مستشفى عرعر المركزي", "status": "on", "phone": "0565988092"}, {"name": "د. تركي الغامدي 2", "specialty": "النساء والولادة", "hospital": "مستشفى النساء والولادة والأطفال بعرعر", "status": "available", "phone": "0580297134"}, {"name": "د. ياسر الزهراني 2", "specialty": "التخدير", "hospital": "مستشفى طريف العام", "status": "off", "phone": "0576117520"}, {"name": "د. زياد المطيري", "specialty": "العناية المركزة", "hospital": "مستشفى رفحاء المركزي", "status": "on", "phone": "0546947736"}, {"name": "د. نايف الزهراني", "specialty": "الأشعة", "hospital": "مستشفى العويقيلة العام", "status": "available", "phone": "0573464980"}, {"name": "د. فهد المطيري 2", "specialty": "طب الأسرة", "hospital": "مستشفى جديدة عرعر", "status": "off", "phone": "0564293128"}];
+const hospitals=[...new Set(doctors.map(x=>x.hospital))].sort();
+const specialties=[...new Set(doctors.map(x=>x.specialty))].sort();
+hospital.innerHTML += hospitals.map(x=>`<option>${x}</option>`).join('');
+specialty.innerHTML += specialties.map(x=>`<option>${x}</option>`).join('');
+let statusFilter='';
+function setStatus(s){statusFilter=s;document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));document.getElementById(s?('c-'+s):'c-all').classList.add('active');render()}
+function resetAll(){q.value='';hospital.value='';specialty.value='';setStatus('')}
+function label(s){return s==='on'?'مناوب الآن':s==='available'?'متاح':'غير مناوب'}
+function render(){
+ const query=q.value.trim().toLowerCase();
+ const rows=doctors.filter(d=>(!query || (d.name+' '+d.specialty+' '+d.hospital).toLowerCase().includes(query)) && (!hospital.value||d.hospital===hospital.value)&&(!specialty.value||d.specialty===specialty.value)&&(!statusFilter||d.status===statusFilter));
+ count.textContent=rows.length+' طبيب';
+ list.innerHTML=rows.map((d,i)=>`<article class="card"><div class="top"><div><div class="name">${d.name}</div><div class="meta">${d.specialty}<br>${d.hospital}</div></div><span class="status ${d.status}">${label(d.status)}</span></div><div class="actions"><a class="btn call" href="tel:${d.phone}">اتصال مباشر</a><button class="btn details" onclick="details(${doctors.indexOf(d)})">التفاصيل</button></div></article>`).join('');
+ empty.style.display=rows.length?'none':'block';
+}
+function details(i){const d=doctors[i];sheetBody.innerHTML=`<h2>${d.name}</h2><p><b>التخصص:</b> ${d.specialty}</p><p><b>المستشفى:</b> ${d.hospital}</p><p><b>الحالة:</b> ${label(d.status)}</p><p><b>رقم التواصل التجريبي:</b> ${d.phone}</p>`;sheet.style.display='flex'}
+function closeSheet(){sheet.style.display='none'}
+render();
+</script>
+</body></html>
