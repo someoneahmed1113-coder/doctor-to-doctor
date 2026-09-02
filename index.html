@@ -5,41 +5,339 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#087ca7">
 <title>Doctor to Doctor | تجمع الحدود الشمالية الصحي</title>
+
 <style>
-*{box-sizing:border-box}:root{--blue:#087ca7;--blue2:#11a5d2;--ink:#183747;--muted:#6c7e87;--bg:#f4f8fa;--green:#15885c;--line:#dce8ed}
-body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-header{background:linear-gradient(145deg,#087ca7,#19a9cf);color:white;padding:22px 16px 42px;border-radius:0 0 28px 28px}
-.head{max-width:860px;margin:auto;text-align:center}
-.logo-wrap{display:inline-flex;background:white;border-radius:24px;padding:8px;box-shadow:0 8px 25px #075b7830}
-.logo-wrap img{display:block;width:min(58vw,220px);height:145px;object-fit:contain}
-h1{font-size:29px;margin:13px 0 3px}.tag{font-size:14px;opacity:.95}
-main{max-width:860px;margin:-22px auto 0;padding:0 14px 30px}
-.panel,.card{background:white;border:1px solid var(--line);box-shadow:0 6px 22px #234a5b12}
-.panel{border-radius:20px;padding:14px}
-.search{width:100%;padding:14px;border:1px solid #cfe0e7;border-radius:13px;font-size:16px;outline:none}
-.filters{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
-select{width:100%;padding:12px;border:1px solid #cfe0e7;border-radius:12px;background:white;font-size:14px}
-.chips{display:flex;gap:8px;overflow:auto;padding:11px 0 1px}
-.chip{border:0;padding:9px 13px;border-radius:999px;white-space:nowrap;background:#eaf3f7;color:#315767;font-weight:700}
-.chip.active{background:var(--blue);color:white}
-.bar{display:flex;align-items:center;justify-content:space-between;margin:19px 2px 8px}
-.count{font-size:13px;color:var(--muted)}
-.card{border-radius:18px;padding:15px;margin:10px 0}
-.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-.name{font-size:18px;font-weight:800}.meta{font-size:13px;color:var(--muted);line-height:1.8;margin-top:4px}
-.status{font-size:12px;font-weight:700;padding:7px 9px;border-radius:999px;white-space:nowrap}
-.on{background:#dff5e9;color:#12633f}.available{background:#e2f4fb;color:#166886}.off{background:#eef2f4;color:#687a83}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
-.btn{border:0;border-radius:12px;padding:11px;text-align:center;text-decoration:none;font-size:14px;font-weight:700}
-.call{background:var(--green);color:white}.details{background:#e9f4f8;color:#17617a}
-.notice{margin-top:16px;padding:12px;border-radius:14px;background:#fff8df;color:#6f5a0c;font-size:12px;line-height:1.7}
-.empty{display:none;text-align:center;padding:35px;color:var(--muted)}
-footer{text-align:center;color:#84959d;font-size:11px;padding:18px}
-.sheet{display:none;position:fixed;inset:0;background:#0006;align-items:flex-end;z-index:5}
-.box{background:white;width:100%;border-radius:25px 25px 0 0;padding:20px;max-height:75vh;overflow:auto}
-.close{width:100%;border:0;border-radius:12px;padding:12px;margin-top:12px}
-@media(max-width:560px){.filters{grid-template-columns:1fr}.logo-wrap img{height:125px}}
+*{box-sizing:border-box}
+:root{
+  --primary:#0B6F8E;
+  --primary-dark:#07546D;
+  --primary-soft:#EAF6FA;
+  --accent:#18A7C8;
+  --ink:#163241;
+  --muted:#6F8590;
+  --bg:#F4F8FA;
+  --surface:#FFFFFF;
+  --line:#DCE8ED;
+  --green:#12805C;
+  --green-soft:#E5F5EE;
+  --blue-soft:#E7F3F8;
+  --gray-soft:#F1F4F6;
+  --shadow:0 10px 30px rgba(20,63,79,.08);
+}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Tahoma,Arial,sans-serif;
+  background:
+    radial-gradient(circle at top right,rgba(24,167,200,.08),transparent 34%),
+    var(--bg);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+header{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,#07546D 0%,#0B6F8E 56%,#18A7C8 100%);
+  color:white;
+  padding:28px 18px 62px;
+  border-radius:0 0 34px 34px;
+}
+header:before,
+header:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.07);
+}
+header:before{width:190px;height:190px;top:-90px;left:-55px}
+header:after{width:250px;height:250px;right:-120px;bottom:-145px}
+.head{
+  max-width:920px;
+  margin:auto;
+  text-align:center;
+  position:relative;
+  z-index:1;
+}
+.logo-wrap{
+  width:100%;
+  max-width:250px;
+  margin:auto;
+  background:white;
+  border-radius:22px;
+  padding:12px 18px;
+  box-shadow:0 14px 34px rgba(0,40,55,.18);
+}
+.logo-wrap img{
+  display:block;
+  width:100%;
+  height:112px;
+  object-fit:contain;
+}
+h1{
+  margin:17px 0 5px;
+  font-size:31px;
+  line-height:1.1;
+  letter-spacing:.2px;
+}
+.tag{
+  font-size:14px;
+  opacity:.93;
+  line-height:1.7;
+}
+main{
+  max-width:920px;
+  margin:-34px auto 0;
+  padding:0 14px 34px;
+  position:relative;
+  z-index:2;
+}
+.panel{
+  background:rgba(255,255,255,.98);
+  border:1px solid rgba(220,232,237,.95);
+  border-radius:22px;
+  padding:15px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(8px);
+}
+.search{
+  width:100%;
+  padding:15px 16px;
+  border:1px solid #CFE0E7;
+  border-radius:14px;
+  font-size:16px;
+  background:#FAFCFD;
+  color:var(--ink);
+  outline:none;
+  transition:.2s ease;
+}
+.search:focus{
+  border-color:var(--accent);
+  background:white;
+  box-shadow:0 0 0 4px rgba(24,167,200,.10);
+}
+.filters{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
+select{
+  width:100%;
+  padding:13px 12px;
+  border:1px solid #CFE0E7;
+  border-radius:13px;
+  background:white;
+  color:var(--ink);
+  font-size:14px;
+  outline:none;
+}
+.chips{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding:12px 0 1px;
+  scrollbar-width:none;
+}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  border:0;
+  padding:10px 14px;
+  border-radius:999px;
+  white-space:nowrap;
+  background:#EEF4F6;
+  color:#315767;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s ease;
+}
+.chip:hover{transform:translateY(-1px)}
+.chip.active{
+  background:linear-gradient(135deg,var(--primary-dark),var(--primary));
+  color:white;
+  box-shadow:0 6px 14px rgba(11,111,142,.20);
+}
+.bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:22px 2px 10px;
+}
+.bar strong{
+  font-size:17px;
+  letter-spacing:.1px;
+}
+.count{
+  font-size:12px;
+  color:var(--muted);
+  background:white;
+  border:1px solid var(--line);
+  padding:7px 10px;
+  border-radius:999px;
+}
+.card{
+  position:relative;
+  overflow:hidden;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:17px;
+  margin:11px 0;
+  box-shadow:0 6px 20px rgba(20,63,79,.055);
+  transition:.2s ease;
+}
+.card:before{
+  content:"";
+  position:absolute;
+  top:0;
+  right:0;
+  width:4px;
+  height:100%;
+  background:#D8E2E7;
+}
+.card-on:before{background:var(--green)}
+.card-available:before{background:var(--accent)}
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 26px rgba(20,63,79,.09);
+}
+.top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+.name{
+  font-size:18px;
+  font-weight:800;
+  line-height:1.45;
+}
+.meta{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.9;
+  margin-top:6px;
+}
+.status{
+  position:relative;
+  font-size:12px;
+  font-weight:800;
+  padding:8px 11px 8px 12px;
+  border-radius:999px;
+  white-space:nowrap;
+}
+.status:before{
+  content:"";
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  margin-left:6px;
+  vertical-align:1px;
+  background:currentColor;
+}
+.on{background:var(--green-soft);color:#116642}
+.available{background:var(--blue-soft);color:#17647E}
+.off{background:var(--gray-soft);color:#73828A}
+.actions{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:9px;
+  margin-top:14px;
+}
+.btn{
+  border:0;
+  border-radius:12px;
+  padding:12px;
+  text-align:center;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+}
+.call{
+  background:linear-gradient(135deg,#117754,#159567);
+  color:white;
+  box-shadow:0 6px 14px rgba(18,128,92,.16);
+}
+.whatsapp{
+  background:linear-gradient(135deg,#1F9D68,#25B875);
+  color:white;
+  box-shadow:0 6px 14px rgba(31,157,104,.15);
+}
+.details{
+  background:var(--primary-soft);
+  color:var(--primary-dark);
+}
+.notice{
+  margin-top:18px;
+  padding:14px;
+  border:1px solid #F0E2AE;
+  border-radius:16px;
+  background:#FFF9E8;
+  color:#6D5B1F;
+  font-size:12px;
+  line-height:1.8;
+}
+.empty{
+  display:none;
+  text-align:center;
+  padding:40px 10px;
+  color:var(--muted);
+}
+footer{
+  text-align:center;
+  color:#8B9BA3;
+  font-size:11px;
+  padding:20px 8px 8px;
+}
+.sheet{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(7,28,38,.48);
+  align-items:flex-end;
+  z-index:20;
+  backdrop-filter:blur(3px);
+}
+.box{
+  background:white;
+  width:100%;
+  max-height:78vh;
+  overflow:auto;
+  border-radius:28px 28px 0 0;
+  padding:22px;
+  box-shadow:0 -18px 50px rgba(0,0,0,.14);
+}
+.box h2{margin:0 0 16px;font-size:22px}
+.box p{
+  margin:8px 0;
+  padding:10px 12px;
+  background:#F7FAFB;
+  border-radius:12px;
+  color:#35505D;
+}
+.close{
+  width:100%;
+  border:0;
+  border-radius:13px;
+  padding:13px;
+  margin-top:12px;
+  background:#EEF3F5;
+  color:#35505D;
+  font-weight:800;
+}
+@media(max-width:560px){
+  header{padding:22px 14px 54px;border-radius:0 0 28px 28px}
+  .logo-wrap{max-width:220px;padding:9px 14px}
+  .logo-wrap img{height:96px}
+  h1{font-size:27px}
+  main{margin-top:-30px}
+  .filters{grid-template-columns:1fr}
+  .actions{grid-template-columns:1fr 1fr}
+  .actions .details{grid-column:1/-1}
+}
 </style>
+
 </head>
 <body>
 <header><div class="head">
@@ -81,7 +379,7 @@ function render(){
  const query=q.value.trim().toLowerCase();
  const rows=doctors.filter(d=>(!query || (d.name+' '+d.specialty+' '+d.hospital).toLowerCase().includes(query)) && (!hospital.value||d.hospital===hospital.value)&&(!specialty.value||d.specialty===specialty.value)&&(!statusFilter||d.status===statusFilter));
  count.textContent=rows.length+' طبيب';
- list.innerHTML=rows.map((d,i)=>`<article class="card"><div class="top"><div><div class="name">${d.name}</div><div class="meta">${d.specialty}<br>${d.hospital}</div></div><span class="status ${d.status}">${label(d.status)}</span></div><div class="actions"><a class="btn call" href="tel:${d.phone}">اتصال مباشر</a><button class="btn details" onclick="details(${doctors.indexOf(d)})">التفاصيل</button></div></article>`).join('');
+ list.innerHTML=rows.map((d,i)=>`<article class="card card-${d.status}"><div class="top"><div><div class="name">${d.name}</div><div class="meta">${d.specialty}<br>${d.hospital}</div></div><span class="status ${d.status}">${label(d.status)}</span></div><div class="actions"><a class="btn call" href="tel:${d.phone}">اتصال مباشر</a><a class="btn whatsapp" href="https://wa.me/966${d.phone.replace(/^0/,'')}" target="_blank" rel="noopener">واتساب</a><button class="btn details" onclick="details(${doctors.indexOf(d)})">التفاصيل</button></div></article>`).join('');
  empty.style.display=rows.length?'none':'block';
 }
 function details(i){const d=doctors[i];sheetBody.innerHTML=`<h2>${d.name}</h2><p><b>التخصص:</b> ${d.specialty}</p><p><b>المستشفى:</b> ${d.hospital}</p><p><b>الحالة:</b> ${label(d.status)}</p><p><b>رقم التواصل التجريبي:</b> ${d.phone}</p>`;sheet.style.display='flex'}
